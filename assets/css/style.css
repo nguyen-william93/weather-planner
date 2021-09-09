@@ -1,0 +1,9 @@
+body{
+    margin: 0 1% 0 1%;
+}
+
+.app-title{
+    background-image: linear-gradient(to right,#87CEFA, #0A0038);
+    padding: 1% 2%;
+    margin-bottom: 10px;
+}
