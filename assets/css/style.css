@@ -1,7 +1,29 @@
 
-
+h2{
+    font-size: 40px;
+}
 .app-title{
     background-image: linear-gradient(to right,#87CEFA, #0A0038);
     padding: 1% 2%;
     margin-bottom: 10px;
+}
+
+#search-city{
+    border-style: hidden;
+}
+
+.btn{
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.form-input{
+    height: 60px;
+    font-size: 30px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.history{
+    border-top: 5px solid gray;
 }

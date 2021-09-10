@@ -1,6 +1,8 @@
 
+
 var getWeather = function(lon, lat){
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&appid=9698d78e4b0b91d10c1cae15ee7197eb"
+
     var response = fetch(apiUrl).then(function(response){
         if (response.ok){
             response.json().then(function(data){

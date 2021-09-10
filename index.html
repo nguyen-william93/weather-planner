@@ -24,26 +24,29 @@
     <link rel="stylesheet" href="./assets/css/style.css" />
     <title>Weather Dashboard</title>
   </head>
-  <body class = "flex-column">
+  <body>
       <header class = "hero">
           <h1 class = "app-title text-center text-white">Weather Dashboard</h1>
       </header>
-      <main class = "flex-row row">
-          <section class = "col-md-4">
-              <div class = "card">
-                  <div class = "card-header text-uppercase">search for a city: </div>
-                  <div class = "card-body"> 
-
-                    <form class =  "card-body" id = "user-form">
-                        <label class = "form-label" for = "city"></label>
-                        <input name = "city" id = "city" type = "text" autofocus = true class = "form-input">
-                        <button type = "submit" class = "btn" id = "search">Search</button>
-                    </form>
-                  </div>
+      <main class = "row ml-4">
+          <section class = "col-md-3">
+              <div class = "card" id = "search-city">
+                  <h2 class = "text-left">Search For A City:</h2>
+                  <form id = " card-body user-form" class = "form-group d-flex justify-content-center flex-column">
+                      <label class = "form-label" for = "city"></label>
+                      <input name = "city" id = "city" type = "text" autofocus = true class = "form-input">
+                      <button type = "submit" class = "btn btn-primary" id = "search">Search</button>
+                  </form>
               </div>
-              <div class = "card">Histroy</div>
+              <div class = "card history border-right-0 border-left-0 border-bottom-0" id = "history">
+                <button class = "btn btn-secondary">a</button>
+                <button class = "btn">a</button>
+                <button class = "btn">a</button>
+                <button class = "btn">a</button>
+                <button class = "btn">a</button>
+              </div>
           </section>
-          <section class = "col-md-8">
+          <section class = "col-md-9">
               <div class = "row">now</div>
               <div class = "row">
                   <div class = "card">a</div>
