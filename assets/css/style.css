@@ -1,6 +1,6 @@
 
 h2{
-    font-size: 40px;
+    font-size: 35px;
 }
 .app-title{
     background-image: linear-gradient(to right,#87CEFA, #0A0038);
@@ -18,12 +18,28 @@ h2{
 }
 
 .form-input{
-    height: 60px;
-    font-size: 30px;
+    height: 50px;
+    font-size: 25px;
     border-radius: 10px;
     text-align: center;
 }
 
 .history{
     border-top: 5px solid gray;
+}
+
+.current{
+    width: 100%;
+    border: solid 1px;
+    height: 80%;
+}
+
+p{
+    padding-left: 16px;
+    font-size: 20px;
+}
+
+span{
+    background-color: green;
+    border-radius: 5px;
 }
