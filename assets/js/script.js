@@ -10,9 +10,6 @@ var displayCurrentWeather = function(name, date, temp, humidity, wind_speed, uvi
     var convertDate = new Date(date * 1000).toLocaleString();
     var dateObj = convertDate.slice(0,8);
 
-    //clearing the section and append the new search section
-    document.getElementById("display-data").innerHTML = ""
-
     var currentWeather = $("<div>").attr("id", "current").addClass("row current d-flex flex-column justify-content-around");
     var h2El = $("<h2>").attr("id", "city-name").addClass("pl-3 pt-2").text(name.toUpperCase() + " (" + dateObj + ")");
     currentWeather.append(h2El) // append the city name and date.
@@ -48,14 +45,38 @@ var displayCurrentWeather = function(name, date, temp, humidity, wind_speed, uvi
     }
 
     $("#display-data").append(currentWeather);
+
+    create5DaySection(); //create the 5-day forecast section after the current section render
 };
 
-var display5Day = function (name, date, temp, humidity, wind_speed, uvi, icon){
+var create5DaySection = function(){
+    var divEl = $("<div>").addClass("row d-flex flex-column justify-content-around forecast")
+    var h2El = $("<h3>").text("5-Day Forecast:").addClass("pt-3 pb-2");
+    var cardDiv = $("<div>").addClass("d-flex flex-row justify-content-between").attr("id", "5DayCard");
+
+    divEl.append(h2El);
+    divEl.append(cardDiv);
+
+    $("#display-data").append(divEl)
+}
+
+var display5Day = function (date, temp, humidity, wind_speed, icon){
     var convertDate = new Date(date * 1000).toLocaleString();
+    var dateObj = convertDate.slice(0,8);
+    var divEl = $("<div>");
+    var card = $("<div>").addClass("card days")
+    var cardBody = $("<div>").addClass("card-body");
+    var cardTitle = $("<div>").addClass("card-title").text(dateObj);
+    var cardImg = $("<img>").attr({src:"http://openweathermap.org/img/wn/10d.png", alt: "weather icon"});
+    var cardText = $("<")
+    divEl.append(cardImg);
+    cardBody.append(cardTitle);
+    cardBody.append(divEl);
+    card.append(cardBody);
 
-    var arr = [name, convertDate, temp, humidity, wind_speed, uvi, icon];
+    $("#5DayCard").append(card);
 
-    console.log("http://openweathermap.org/img/w/" + icon + ".png");
+
 };
 
 
@@ -69,7 +90,7 @@ var getWeather = function(cityName,lon, lat){
                     if (i === 0){ //first index is today weather
                         displayCurrentWeather(cityName, data.daily[i].dt, data.daily[i].temp.day, data.daily[i].humidity, data.daily[i].wind_speed, data.daily[i].uvi);
                     } else { //the rest is 5 day forecast, need the icon for the image.
-                        display5Day(cityName, data.daily[i].dt, data.daily[i].temp.day, data.daily[i].humidity, data.daily[i].wind_speed, data.daily[i].uvi, data.daily[i].weather[0].icon);
+                        display5Day(data.daily[i].dt, data.daily[i].temp.day, data.daily[i].humidity, data.daily[i].wind_speed, data.daily[i].weather[0].icon);
                     }
                 }
                 
@@ -94,6 +115,7 @@ var getLatLon = function(city){
 
 $("#search").on("click", function(event){
     event.preventDefault();
+    document.getElementById("display-data").innerHTML = ""
 
     var cityName = $("#city").val();
 

@@ -40,6 +40,16 @@ p{
 }
 
 span{
-    background-color: green;
     border-radius: 5px;
+}
+
+.forecast{
+    width:100%;
+}
+
+.days{
+    background-color: #33475a;
+    color: white;
+    width: 18%;
+    font-size: 18px;
 }
