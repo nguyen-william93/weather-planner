@@ -20,24 +20,23 @@ var displayCurrentWeather = function(name, date, temp, humidity, wind_speed, uvi
             var pEl = $("<p>").attr("id", dataArr[i]).text(nameArr[i] + dataArr[i] + unitArr[i]);
             currentWeather.append(pEl);
         } else { // change the color of background of UV index depending on how high the UV index is serve as a warning. 
+            var spanEl = $("<span>").addClass("text-light pl-3 pr-3 text-center").text(dataArr[i]);
+            pEl = $("<p>").attr("id", dataArr[i]).text(nameArr[i]);
+
             if (dataArr[i] <= 2){
-                var spanEl = $("<span>").addClass("text-light pl-3 pr-3 text-center bg-success").text(dataArr[i])
-                pEl = $("<p>").attr("id", dataArr[i]).text(nameArr[i]);
+                spanEl.addClass("bg-success");
                 pEl.append(spanEl);
                 currentWeather.append(pEl);
             } else if ( dataArr[i] > 2 && dataArr[i] <= 5){
-                var spanEl = $("<span>").addClass("text-light pl-3 pr-3 text-center bg-warning").text(dataArr[i])
-                pEl = $("<p>").attr("id", dataArr[i]).text(nameArr[i]);
+                spanEl.addClass("bg-warning");
                 pEl.append(spanEl);
                 currentWeather.append(pEl);
             } else if (dataArr[i] > 5 && dataArr[i] <= 10){
-                var spanEl = $("<span>").addClass("text-light pl-3 pr-3 text-center bg-danger").text(dataArr[i])
-                pEl = $("<p>").attr("id", dataArr[i]).text(nameArr[i]);
+                spanEl.addClass("bg-danger");
                 pEl.append(spanEl);
                 currentWeather.append(pEl);
             } else {
-                var spanEl = $("<span>").addClass("text-light pl-3 pr-3 text-center bg-secondary").text(dataArr[i])
-                pEl = $("<p>").attr("id", dataArr[i]).text(nameArr[i]);
+                spanEl.addClass("bg-secondary");
                 pEl.append(spanEl);
                 currentWeather.append(pEl);
             }
@@ -47,6 +46,7 @@ var displayCurrentWeather = function(name, date, temp, humidity, wind_speed, uvi
     $("#display-data").append(currentWeather);
 
     create5DaySection(); //create the 5-day forecast section after the current section render
+
 };
 
 var create5DaySection = function(){
@@ -68,7 +68,6 @@ var display5Day = function (date, temp, humidity, wind_speed, icon){
     var cardBody = $("<div>").addClass("card-body");
     var cardTitle = $("<div>").addClass("card-title").text(dateObj);
     var cardImg = $("<img>").attr({src:"http://openweathermap.org/img/wn/10d.png", alt: "weather icon"});
-    var cardText = $("<")
     divEl.append(cardImg);
     cardBody.append(cardTitle);
     cardBody.append(divEl);
@@ -106,12 +105,42 @@ var getLatLon = function(city){
         if (response.ok){
             response.json().then(function(data){
                 getWeather(city, data.coord.lon, data.coord.lat);
+                saveData(city);
             })
         } else {
             console.log("error: please enter a valid city name");
         }
     })
 };
+
+var createBtn = function(name){
+    var btnEl = $("<button>").addClass("btn btn-secondary mb-2").attr("id", "submit").text(name);
+    $("#history").append(btnEl);
+};
+
+var saveData = function(name){
+    var citySearch = JSON.parse(localStorage.getItem("cityName")) || []
+    var nameUpper = name.toUpperCase();
+
+    if(citySearch.length === 0){
+        citySearch.push(nameUpper);
+        createBtn(nameUpper);
+    } else if (!citySearch.includes(nameUpper)){
+        citySearch.push(nameUpper);
+        createBtn(nameUpper);
+    }   
+            
+    window.localStorage.setItem("cityName", JSON.stringify(citySearch));
+
+};
+
+var loadData = function(){
+    var name = JSON.parse(localStorage.getItem("cityName"));
+
+    $.each(name, function(list, item){
+        createBtn(item);
+    })
+}
 
 $("#search").on("click", function(event){
     event.preventDefault();
@@ -122,3 +151,12 @@ $("#search").on("click", function(event){
     getLatLon(cityName);
 
 });
+
+$("#history").on("click", "#submit", function(){
+    var city = $(this).text();
+    document.getElementById("display-data").innerHTML = "";
+    getLatLon(city);
+});
+
+
+loadData();
