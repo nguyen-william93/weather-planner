@@ -51,5 +51,20 @@ span{
     background-color: #33475a;
     color: white;
     width: 18%;
+    border-radius: 10px;
+    padding: 0px;
+    height: 10%;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.title{
+    font-size: 18px;
+    padding-left: 5px;
+}
+
+.data{
     font-size: 15px;
+    width: 100%;
+    padding-left: 5px;
 }

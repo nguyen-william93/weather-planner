@@ -7,11 +7,11 @@ var displayCurrentWeather = function(name, date, temp, humidity, wind_speed, uvi
     var unitArr = ["\u00B0F", " MPH", " %"]
 
     //converting binary time into UTC time
-    var convertDate = new Date(date * 1000).toLocaleString();
-    var dateObj = convertDate.slice(0,8);
+    var dateObj = new Date(date * 1000).toLocaleString();
+    var convertDate = dateObj.slice(0,8);
 
     var currentWeather = $("<div>").attr("id", "current").addClass("row current d-flex flex-column justify-content-around");
-    var h2El = $("<h2>").attr("id", "city-name").addClass("pl-3 pt-2").text(name.toUpperCase() + " (" + dateObj + ")");
+    var h2El = $("<h2>").attr("id", "city-name").addClass("pl-3 pt-2").text(name.toUpperCase() + " (" + convertDate + ")");
     currentWeather.append(h2El) // append the city name and date.
 
     //append the temp, wind humidity and uv index
@@ -50,7 +50,7 @@ var displayCurrentWeather = function(name, date, temp, humidity, wind_speed, uvi
 };
 
 var create5DaySection = function(){
-    var divEl = $("<div>").addClass("row d-flex flex-column justify-content-around forecast")
+    var divEl = $("<div>").addClass("row-md d-flex flex-column justify-content-around forecast")
     var h2El = $("<h3>").text("5-Day Forecast:").addClass("pt-3 pb-2");
     var cardDiv = $("<div>").addClass("d-flex flex-row justify-content-between").attr("id", "5DayCard");
 
@@ -61,21 +61,37 @@ var create5DaySection = function(){
 }
 
 var display5Day = function (date, temp, humidity, wind_speed, icon){
-    var convertDate = new Date(date * 1000).toLocaleString();
-    var dateObj = convertDate.slice(0,8);
-    var divEl = $("<div>");
-    var card = $("<div>").addClass("card days")
-    var cardBody = $("<div>").addClass("card-body");
-    var cardTitle = $("<div>").addClass("card-title").text(dateObj);
-    var cardImg = $("<img>").attr({src:"http://openweathermap.org/img/wn/10d.png", alt: "weather icon"});
-    divEl.append(cardImg);
+    var dateObj = new Date(date * 1000).toLocaleString();
+    var convertDate = dateObj.slice(0,8);
+
+    var card = $("<div>").addClass("card align-self-md-stretch days")
+    //title/date
+    var cardBody = $("<div>").addClass("card-body pt-0 pl-0 pr-0 pb-0");
+
+    var cardTitle = $("<p>").addClass("title").text(convertDate);
     cardBody.append(cardTitle);
+
+    //div - image
+    var divEl = $("<div>");
+    var cardImg = $("<img>").attr({src:"http://openweathermap.org/img/wn/" + icon +".png", alt: "weather icon"});
+    divEl.append(cardImg);
     cardBody.append(divEl);
+
+    //temp
+    var tempEl = $("<p>").addClass("data").text("Temp: " + temp + "\u00B0F");
+    cardBody.append(tempEl);
+
+    //Wind
+    var windEl = $("<p>").addClass("data").text("Wind: " + wind_speed + " MPH");
+    cardBody.append(windEl);
+
+    //humidity
+    var humidityEl = $("<p>").addClass("data").text("Humidity: " + humidity + " %")
+    cardBody.append(humidityEl);
+
     card.append(cardBody);
 
     $("#5DayCard").append(card);
-
-
 };
 
 
@@ -105,7 +121,7 @@ var getLatLon = function(city){
         if (response.ok){
             response.json().then(function(data){
                 getWeather(city, data.coord.lon, data.coord.lat);
-                saveData(city);
+                saveData(city); //only save if the search is valid
             })
         } else {
             console.log("error: please enter a valid city name");
