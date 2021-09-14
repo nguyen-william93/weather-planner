@@ -60,7 +60,7 @@ var create5DaySection = function(){
     $("#display-data").append(divEl)
 }
 
-var display5Day = function (date, temp, humidity, wind_speed, icon){
+var display5Day = function (date, temp, humidity, wind_speed, icon, description){
     var dateObj = new Date(date * 1000).toLocaleString();
     var convertDate = dateObj.slice(0,8);
 
@@ -73,7 +73,7 @@ var display5Day = function (date, temp, humidity, wind_speed, icon){
 
     //div - image
     var divEl = $("<div>");
-    var cardImg = $("<img>").attr({src:"http://openweathermap.org/img/wn/" + icon +".png", alt: "weather icon"});
+    var cardImg = $("<img>").attr({src:"http://openweathermap.org/img/wn/" + icon +".png", alt: description});
     divEl.append(cardImg);
     cardBody.append(divEl);
 
@@ -94,7 +94,7 @@ var display5Day = function (date, temp, humidity, wind_speed, icon){
     $("#5DayCard").append(card);
 };
 
-
+//get the weather base on lat and lot
 var getWeather = function(cityName,lon, lat){
     var apiUrl = "https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&units=imperial&appid=9698d78e4b0b91d10c1cae15ee7197eb"
 
@@ -105,7 +105,7 @@ var getWeather = function(cityName,lon, lat){
                     if (i === 0){ //first index is today weather
                         displayCurrentWeather(cityName, data.daily[i].dt, data.daily[i].temp.day, data.daily[i].humidity, data.daily[i].wind_speed, data.daily[i].uvi);
                     } else { //the rest is 5 day forecast, need the icon for the image.
-                        display5Day(data.daily[i].dt, data.daily[i].temp.day, data.daily[i].humidity, data.daily[i].wind_speed, data.daily[i].weather[0].icon);
+                        display5Day(data.daily[i].dt, data.daily[i].temp.day, data.daily[i].humidity, data.daily[i].wind_speed, data.daily[i].weather[0].icon, data.daily[i].weather[0].description);
                     }
                 }
                 
@@ -114,6 +114,7 @@ var getWeather = function(cityName,lon, lat){
     })
 };
 
+//get the lat and lon depend on the city that passed in
 var getLatLon = function(city){
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=9698d78e4b0b91d10c1cae15ee7197eb"
 
@@ -129,11 +130,13 @@ var getLatLon = function(city){
     })
 };
 
+//create button for each local save city
 var createBtn = function(name){
     var btnEl = $("<button>").addClass("btn btn-secondary mb-2").attr("id", "submit").text(name);
     $("#history").append(btnEl);
 };
 
+//save the search city into the local save
 var saveData = function(name){
     var citySearch = JSON.parse(localStorage.getItem("cityName")) || []
     var nameUpper = name.toUpperCase();
@@ -141,7 +144,7 @@ var saveData = function(name){
     if(citySearch.length === 0){
         citySearch.push(nameUpper);
         createBtn(nameUpper);
-    } else if (!citySearch.includes(nameUpper)){
+    } else if (!citySearch.includes(nameUpper)){ // only push the search into local storage if the city isnt in local storage
         citySearch.push(nameUpper);
         createBtn(nameUpper);
     }   
@@ -158,6 +161,7 @@ var loadData = function(){
     })
 }
 
+//run the script when the search button is click
 $("#search").on("click", function(event){
     event.preventDefault();
     document.getElementById("display-data").innerHTML = ""
@@ -168,6 +172,7 @@ $("#search").on("click", function(event){
 
 });
 
+//listen to dynamic created button from local storage and passed the value into the program
 $("#history").on("click", "#submit", function(){
     var city = $(this).text();
     document.getElementById("display-data").innerHTML = "";
