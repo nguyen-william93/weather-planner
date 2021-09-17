@@ -7,4 +7,4 @@ The infomation about the weather include temperature, wind speed, UVI, humidity,
 
 githublink: https://github.com/nguyen-william93/weather-planner
 deloy link: https://nguyen-william93.github.io/weather-planner/
-Images: ![](./assets/images/main-page.png)
+Images: ![](./assets/images/main_page.png)
