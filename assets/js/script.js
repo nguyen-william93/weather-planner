@@ -101,6 +101,7 @@ var getWeather = function(cityName,lon, lat){
     var response = fetch(apiUrl).then(function(response){
         if (response.ok){
             response.json().then(function(data){
+                console.log(data);
                 for(var i = 0; i < 6; i++){
                     if (i === 0){ //first index is today weather
                         displayCurrentWeather(cityName, data.daily[i].dt, data.daily[i].temp.day, data.daily[i].humidity, data.daily[i].wind_speed, data.daily[i].uvi);
